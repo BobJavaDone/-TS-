@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>创伤评分表 (TS) · 格拉斯哥GCS</title>
+    <style>
+        /* 全局重置 & 基础样式 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, Helvetica, Arial, sans-serif;
+            background: #f0f6fd;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+        .card {
+            max-width: 1100px;
+            width: 100%;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 12px 30px rgba(0, 20, 40, 0.10);
+            padding: 24px 22px 32px;
+        }
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #0b2b44;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+            flex-wrap: wrap;
+        }
+        .subhead {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #e6edf4;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+        .subhead .badge {
+            background: #d4e2f0;
+            color: #1a4b6d;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 4px 16px;
+            border-radius: 30px;
+        }
+
+        /* 患者信息 */
+        .patient-info {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 16px 28px;
+            background: #f8fcff;
+            border-radius: 60px;
+            padding: 10px 24px;
+            margin-bottom: 20px;
+            border: 1px solid #e3edf7;
+        }
+        .patient-info .field {
+            display: flex;
+            align-items: center;
+            gap: 6px 10px;
+            flex-wrap: wrap;
+        }
+        .patient-info .field label {
+            font-weight: 600;
+            color: #1f4662;
+            font-size: 0.95rem;
+        }
+        .patient-info .field input[type="text"],
+        .patient-info .field input[type="number"],
+        .patient-info .field input[type="date"] {
+            padding: 6px 12px;
+            border: 1px solid #c6d9ec;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            background: white;
+            outline: none;
+            width: 120px;
+            transition: 0.1s;
+        }
+        .patient-info .field input[type="text"]:focus,
+        .patient-info .field input[type="number"]:focus,
+        .patient-info .field input[type="date"]:focus {
+            border-color: #1f6c9e;
+            box-shadow: 0 0 0 3px rgba(31, 108, 158, 0.12);
+        }
+        .patient-info .field input[type="text"] {
+            width: 100px;
+        }
+        .patient-info .field input[type="number"] {
+            width: 70px;
+        }
+        .patient-info .field input[type="date"] {
+            width: 150px;
+        }
+        .patient-info .radio-group-inline {
+            display: flex;
+            gap: 4px 12px;
+            align-items: center;
+            background: #f2f8ff;
+            padding: 2px 12px 2px 8px;
+            border-radius: 40px;
+            border: 1px solid #dae6f2;
+        }
+        .patient-info .radio-group-inline label {
+            display: flex;
+            align-items: center;
+            gap: 3px 5px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #1f4662;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 30px;
+        }
+        .patient-info .radio-group-inline input[type="radio"] {
+            accent-color: #1f6c9e;
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+        }
+        .patient-info .radio-group-inline label:has(input:checked) {
+            background: #cde0f5;
+            border-radius: 30px;
+            padding: 2px 10px 2px 6px;
+        }
+
+        /* 表格通用 */
+        .ts-table-wrap,
+        .gcs-table-wrap {
+            margin: 12px 0 8px;
+            border-radius: 20px;
+            border: 1px solid #d4e3f2;
+            overflow: hidden;
+        }
+        .ts-table,
+        .gcs-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+        .ts-table th,
+        .gcs-table th {
+            background: #eef4fa;
+            color: #0a314a;
+            font-weight: 600;
+            padding: 10px 12px;
+            text-align: center;
+            border-bottom: 2px solid #cdddee;
+        }
+        .ts-table td,
+        .gcs-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e2ebf3;
+            vertical-align: middle;
+            text-align: center;
+        }
+        .ts-table tr:last-child td,
+        .gcs-table tr:last-child td {
+            border-bottom: none;
+        }
+        .ts-table .label-col,
+        .gcs-table .label-col {
+            font-weight: 600;
+            color: #1f4662;
+            text-align: left;
+            padding-left: 18px;
+            background: #fafdff;
+            width: 28%;
+        }
+        .ts-table .value-col,
+        .gcs-table .value-col {
+            width: 44%;
+            text-align: center;
+        }
+        .ts-table .score-col,
+        .gcs-table .score-col {
+            width: 18%;
+            text-align: center;
+            font-weight: 700;
+            color: #004b7c;
+            background: #f8fcff;
+        }
+        .ts-table .total-row td,
+        .gcs-table .total-row td {
+            font-weight: 700;
+            font-size: 1.05rem;
+            background: #e7f1fa;
+            border-top: 2px solid #b8d0e6;
+        }
+        .ts-table .total-row .score-col,
+        .gcs-table .total-row .score-col {
+            font-size: 1.3rem;
+            color: #004b7c;
+        }
+        /* 提示行 */
+        .ts-table .hint-row td {
+            background: #f5faff;
+            padding: 8px 18px;
+            text-align: left;
+            font-weight: 500;
+            color: #1f4a69;
+            border-top: 1px solid #d4e3f2;
+        }
+        .ts-table .hint-row .hint-inline {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px 24px;
+        }
+        .ts-table .hint-row .hint-item {
+            display: flex;
+            align-items: center;
+            gap: 4px 10px;
+        }
+        .ts-table .hint-row .hint-item .label {
+            font-weight: 500;
+            color: #1f4662;
+        }
+        .ts-table .hint-row .hint-item .value {
+            font-weight: 700;
+            color: #004b7c;
+        }
+        .ts-table .hint-row .badge-severity {
+            font-weight: 700;
+            padding: 2px 14px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+        }
+        .badge-severity.critical {
+            background: #fde8e8;
+            color: #b33c3c;
+            border: 1px solid #f5c2c2;
+        }
+        .badge-severity.moderate {
+            background: #fff0d6;
+            color: #a8691a;
+            border: 1px solid #f0d4a8;
+        }
+        .badge-severity.mild {
+            background: #e2f0e6;
+            color: #1f7840;
+            border: 1px solid #b8d9c4;
+        }
+
+        .gcs-table .hint-row td {
+            background: #f5faff;
+            padding: 8px 18px;
+            text-align: left;
+            font-weight: 500;
+            color: #1f4a69;
+            border-top: 1px solid #d4e3f2;
+        }
+
+        /* 表格内单选组 */
+        .radio-group-inline {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 4px 8px;
+            background: #f5faff;
+            padding: 2px 8px;
+            border-radius: 40px;
+            border: 1px solid #dae6f2;
+        }
+        .radio-group-inline label {
+            display: flex;
+            align-items: center;
+            gap: 3px 4px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: #1f4662;
+            cursor: pointer;
+            padding: 1px 5px;
+            border-radius: 30px;
+        }
+        .radio-group-inline input[type="radio"] {
+            accent-color: #1f6c9e;
+            width: 14px;
+            height: 14px;
+            cursor: pointer;
+        }
+        .radio-group-inline label:has(input:checked) {
+            background: #cde0f5;
+            border-radius: 30px;
+            padding: 1px 8px 1px 5px;
+        }
+
+        .ts-table .value-col input[type="number"] {
+            width: 80px;
+            padding: 4px 8px;
+            border: 1px solid #c6d9ec;
+            border-radius: 30px;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 500;
+            outline: none;
+            background: white;
+        }
+        .ts-table .value-col input[type="number"]:focus {
+            border-color: #1f6c9e;
+            box-shadow: 0 0 0 3px rgba(31, 108, 158, 0.12);
+        }
+
+        /* 底部面板 */
+        .score-panel {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px 12px;
+            background: #e7f1fa;
+            border-radius: 60px;
+            padding: 14px 26px 14px 28px;
+            border: 1px solid #d0dff0;
+        }
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .btn-reset,
+        .btn-print {
+            background: white;
+            border: 1px solid #b7cedf;
+            color: #1e4b6b;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 10px 24px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            touch-action: manipulation;
+        }
+        .btn-reset:hover,
+        .btn-print:hover {
+            background: #e5f0fc;
+            border-color: #6f9bc2;
+        }
+        .btn-reset:active,
+        .btn-print:active {
+            background: #c8def5;
+            transform: scale(0.96);
+        }
+        .btn-print {
+            background: #e7f1fa;
+            border-color: #8fb4d0;
+        }
+        .btn-print.printing {
+            background: #b8d0e6;
+            border-color: #5a7f9e;
+            color: #0a2a44;
+            transform: scale(0.97);
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .print-guide {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #4a6f8a;
+            text-align: center;
+            background: #f4faff;
+            border-radius: 40px;
+            padding: 8px 16px;
+            border: 1px dashed #b8d0e6;
+            display: block;
+        }
+        .print-guide strong {
+            color: #1a4b6d;
+        }
+
+        /* 响应式（屏幕显示） */
+        @media screen and (max-width: 700px) {
+            body {
+                padding: 8px;
+            }
+            .card {
+                padding: 16px 12px 20px;
+                border-radius: 24px;
+            }
+            h1 {
+                font-size: 1.4rem;
+            }
+            .patient-info {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+                border-radius: 30px;
+                padding: 12px 16px;
+            }
+            .patient-info .field {
+                justify-content: space-between;
+            }
+            .patient-info .field input[type="text"] {
+                width: 80px;
+            }
+            .patient-info .field input[type="number"] {
+                width: 60px;
+            }
+            .patient-info .field input[type="date"] {
+                width: 130px;
+            }
+            .ts-table,
+            .gcs-table {
+                font-size: 0.82rem;
+            }
+            .ts-table th,
+            .gcs-table th {
+                padding: 6px 6px;
+            }
+            .ts-table td,
+            .gcs-table td {
+                padding: 6px 6px;
+            }
+            .radio-group-inline label {
+                font-size: 0.7rem;
+            }
+            .ts-table .value-col input[type="number"] {
+                width: 60px;
+                font-size: 0.8rem;
+            }
+            .ts-table .hint-row .hint-inline {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+            .score-panel {
+                flex-direction: column;
+                align-items: stretch;
+                border-radius: 30px;
+                padding: 16px 20px;
+            }
+            .btn-group {
+                justify-content: center;
+            }
+            .btn-reset,
+            .btn-print {
+                justify-content: center;
+                padding: 10px 16px;
+                flex: 1;
+            }
+            .print-guide {
+                font-size: 0.75rem;
+                padding: 6px 12px;
+            }
+        }
+        @media screen and (max-width: 480px) {
+            .ts-table,
+            .gcs-table {
+                font-size: 0.7rem;
+            }
+            .ts-table th,
+            .gcs-table th {
+                padding: 4px 4px;
+            }
+            .ts-table td,
+            .gcs-table td {
+                padding: 4px 4px;
+            }
+            .radio-group-inline label {
+                font-size: 0.6rem;
+                padding: 0 3px;
+            }
+            .radio-group-inline {
+                gap: 2px 4px;
+                padding: 1px 4px;
+            }
+            .ts-table .value-col input[type="number"] {
+                width: 50px;
+                font-size: 0.7rem;
+                padding: 2px 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card" id="printArea">
+        <div class="subhead">
+            <h1>🚑 院前创伤评分表（TS）</h1>
+            <span class="badge">格拉斯哥GCS · 院前</span>
+        </div>
+
+        <!-- 患者信息 -->
+        <div class="patient-info" id="patientInfo">
+            <div class="field">
+                <label>姓名</label>
+                <input type="text" id="patientName" placeholder="请输入姓名" value="张三">
+            </div>
+            <div class="field">
+                <label>性别</label>
+                <div class="radio-group-inline" role="radiogroup" aria-label="性别">
+                    <label><input type="radio" name="gender" value="男" checked> <span>男</span></label>
+                    <label><input type="radio" name="gender" value="女"> <span>女</span></label>
+                </div>
+            </div>
+            <div class="field">
+                <label>年龄</label>
+                <input type="number" id="patientAge" value="36" min="0" max="150"> <span style="font-weight:500;color:#3a6180;">岁</span>
+            </div>
+            <div class="field">
+                <label>评分日期</label>
+                <input type="date" id="scoreDate">
+            </div>
+        </div>
+
+        <!-- TS 评分表格 -->
+        <div class="ts-table-wrap">
+            <table class="ts-table" id="tsTable">
+                <thead>
+                    <tr>
+                        <th style="text-align:left;padding-left:18px;">指标</th>
+                        <th>观察结果</th>
+                        <th>分值</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="label-col">呼吸频率（次/分）</td>
+                        <td class="value-col">
+                            <input type="number" id="respRate" value="16" min="0" max="60" step="1">
+                        </td>
+                        <td class="score-col" id="respScoreDisplay">4</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">呼吸幅度</td>
+                        <td class="value-col">
+                            <div class="radio-group-inline" role="radiogroup" aria-label="呼吸幅度">
+                                <label><input type="radio" name="depth" value="0"> <span>浅，困难</span></label>
+                                <label><input type="radio" name="depth" value="1" checked> <span>正常</span></label>
+                            </div>
+                        </td>
+                        <td class="score-col" id="depthScoreDisplay">1</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">收缩压（mmHg）</td>
+                        <td class="value-col">
+                            <input type="number" id="sbpValue" value="120" min="0" max="300" step="1">
+                        </td>
+                        <td class="score-col" id="sbpScoreDisplay">4</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">毛细血管再充盈</td>
+                        <td class="value-col">
+                            <div class="radio-group-inline" role="radiogroup" aria-label="毛细血管充盈">
+                                <label><input type="radio" name="capillary" value="0"> <span>无</span></label>
+                                <label><input type="radio" name="capillary" value="1"> <span>迟缓（≥2s）</span></label>
+                                <label><input type="radio" name="capillary" value="2" checked> <span>正常（&lt;2s）</span></label>
+                            </div>
+                        </td>
+                        <td class="score-col" id="capillaryScoreDisplay">2</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">GCS评分</td>
+                        <td class="value-col" id="gcsTotalDisplay">15</td>
+                        <td class="score-col" id="gcsMappedDisplay">5</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td colspan="2" style="text-align:right;padding-right:20px;font-weight:700;">合 计</td>
+                        <td class="score-col" id="totalScoreDisplay">16</td>
+                    </tr>
+                    <tr class="hint-row">
+                        <td colspan="3">
+                            <div class="hint-inline">
+                                <span style="font-weight:600;">提示：</span>
+                                <span class="hint-item">
+                                    <span class="label">伤情严重程度</span>
+                                    <span class="value" id="severityText">存活率高（约96%），病情相对较轻</span>
+                                    <span class="badge-severity mild" id="severityBadge">轻症</span>
+                                </span>
+                                <span class="hint-item">
+                                    <span class="label">预后与死亡率</span>
+                                    <span class="value" id="prognosisText">预后较好</span>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- GCS 评分表格 -->
+        <div class="gcs-table-wrap" style="margin-top:18px;">
+            <table class="gcs-table" id="gcsTable">
+                <thead>
+                    <tr>
+                        <th colspan="3" style="text-align:center;font-size:1.05rem;background:#e8f0f8;border-bottom:2px solid #b8d0e6;">
+                            GCS 评分
+                        </th>
+                    </tr>
+                    <tr>
+                        <th style="text-align:left;padding-left:18px;">指标</th>
+                        <th>观察结果</th>
+                        <th>分值</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="label-col">睁眼反应（E）</td>
+                        <td class="value-col">
+                            <div class="radio-group-inline" role="radiogroup" aria-label="GCS 睁眼">
+                                <label><input type="radio" name="gcsEye" value="1"> <span>不能睁眼</span></label>
+                                <label><input type="radio" name="gcsEye" value="2"> <span>刺痛睁眼</span></label>
+                                <label><input type="radio" name="gcsEye" value="3"> <span>呼之睁眼</span></label>
+                                <label><input type="radio" name="gcsEye" value="4" checked> <span>自发睁眼</span></label>
+                            </div>
+                        </td>
+                        <td class="score-col" id="gcsEyeScore">4</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">语言反应（V）</td>
+                        <td class="value-col">
+                            <div class="radio-group-inline" role="radiogroup" aria-label="GCS 言语">
+                                <label><input type="radio" name="gcsVerbal" value="1"> <span>不能言语</span></label>
+                                <label><input type="radio" name="gcsVerbal" value="2"> <span>只能发音</span></label>
+                                <label><input type="radio" name="gcsVerbal" value="3"> <span>答非所问</span></label>
+                                <label><input type="radio" name="gcsVerbal" value="4"> <span>回答错误</span></label>
+                                <label><input type="radio" name="gcsVerbal" value="5" checked> <span>回答正确</span></label>
+                            </div>
+                        </td>
+                        <td class="score-col" id="gcsVerbalScore">5</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">运动反应（M）</td>
+                        <td class="value-col">
+                            <div class="radio-group-inline" role="radiogroup" aria-label="GCS 运动">
+                                <label><input type="radio" name="gcsMotor" value="1"> <span>不能运动</span></label>
+                                <label><input type="radio" name="gcsMotor" value="2"> <span>不能伸肢</span></label>
+                                <label><input type="radio" name="gcsMotor" value="3"> <span>刺痛屈肢</span></label>
+                                <label><input type="radio" name="gcsMotor" value="4"> <span>刺痛躲避</span></label>
+                                <label><input type="radio" name="gcsMotor" value="5"> <span>刺痛定位</span></label>
+                                <label><input type="radio" name="gcsMotor" value="6" checked> <span>遵嘱运动</span></label>
+                            </div>
+                        </td>
+                        <td class="score-col" id="gcsMotorScore">6</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td colspan="2" style="text-align:right;padding-right:20px;font-weight:700;">合 计</td>
+                        <td class="score-col" id="gcsTotalScoreDisplay">15</td>
+                    </tr>
+                    <tr class="hint-row">
+                        <td colspan="3" id="gcsStatusDisplay">提示：正常</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div class="score-panel">
+            <div style="font-size:0.9rem;color:#1f4a69;font-weight:500;">
+                TS 评分范围 1–16 分，分值越高创伤程度越轻。
+            </div>
+            <div class="btn-group">
+                <button class="btn-reset" id="resetBtn" type="button">⟲ 重置</button>
+                <button class="btn-print" id="printBtn" type="button">🖨️ 打印</button>
+            </div>
+        </div>
+
+        <!-- 打印引导提示（手机浏览器常见问题） -->
+        <div class="print-guide">
+            💡 <strong>提示：</strong> 若点击“打印”无反应，请尝试点击浏览器右上角菜单 → <strong>“打印”</strong> 或 <strong>“分享→打印”</strong>。
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ----- DOM 元素引用 -----
+            const patientName = document.getElementById('patientName');
+            const patientAge = document.getElementById('patientAge');
+            const scoreDate = document.getElementById('scoreDate');
+
+            const respRate = document.getElementById('respRate');
+            const sbpValue = document.getElementById('sbpValue');
+            const respScoreDisplay = document.getElementById('respScoreDisplay');
+            const sbpScoreDisplay = document.getElementById('sbpScoreDisplay');
+            const depthScoreDisplay = document.getElementById('depthScoreDisplay');
+            const capillaryScoreDisplay = document.getElementById('capillaryScoreDisplay');
+            const gcsMappedDisplay = document.getElementById('gcsMappedDisplay');
+            const totalScoreDisplay = document.getElementById('totalScoreDisplay');
+            const gcsTotalDisplay = document.getElementById('gcsTotalDisplay');
+
+            const severityText = document.getElementById('severityText');
+            const severityBadge = document.getElementById('severityBadge');
+            const prognosisText = document.getElementById('prognosisText');
+
+            const gcsEyeScore = document.getElementById('gcsEyeScore');
+            const gcsVerbalScore = document.getElementById('gcsVerbalScore');
+            const gcsMotorScore = document.getElementById('gcsMotorScore');
+            const gcsTotalScoreDisplay = document.getElementById('gcsTotalScoreDisplay');
+            const gcsStatusDisplay = document.getElementById('gcsStatusDisplay');
+
+            const depthRadios = document.querySelectorAll('input[name="depth"]');
+            const capillaryRadios = document.querySelectorAll('input[name="capillary"]');
+            const gcsEye = document.querySelectorAll('input[name="gcsEye"]');
+            const gcsVerbal = document.querySelectorAll('input[name="gcsVerbal"]');
+            const gcsMotor = document.querySelectorAll('input[name="gcsMotor"]');
+
+            const resetBtn = document.getElementById('resetBtn');
+            const printBtn = document.getElementById('printBtn');
+
+            // ----- 工具函数 -----
+            function getRadioValue(radios) {
+                for (let r of radios) {
+                    if (r.checked) return Number(r.value);
+                }
+                return 0;
+            }
+
+            function getRespScore(val) {
+                const v = Number(val);
+                if (isNaN(v) || v < 0) return 0;
+                if (v >= 10 && v <= 24) return 4;
+                if (v >= 25 && v <= 35) return 3;
+                if (v >= 36) return 2;
+                if (v >= 1 && v <= 9) return 1;
+                if (v === 0) return 0;
+                if (v > 60) return 2;
+                return 0;
+            }
+
+            function getSbpScore(val) {
+                const v = Number(val);
+                if (isNaN(v) || v < 0) return 0;
+                if (v >= 90) return 4;
+                if (v >= 70 && v <= 89) return 3;
+                if (v >= 50 && v <= 69) return 2;
+                if (v >= 1 && v <= 49) return 1;
+                if (v === 0) return 0;
+                if (v > 300) return 4;
+                return 0;
+            }
+
+            function getGcsMapped(gcsSum) {
+                if (gcsSum >= 14 && gcsSum <= 15) return 5;
+                if (gcsSum >= 11 && gcsSum <= 13) return 4;
+                if (gcsSum >= 8 && gcsSum <= 10) return 3;
+                if (gcsSum >= 5 && gcsSum <= 7) return 2;
+                if (gcsSum >= 3 && gcsSum <= 4) return 1;
+                return 0;
+            }
+
+            function getGcsStatus(gcsSum) {
+                if (gcsSum === 15) return '正常';
+                if (gcsSum >= 13) return '轻度昏迷';
+                if (gcsSum >= 9) return '中度昏迷';
+                if (gcsSum >= 3) return '重度昏迷';
+                return '未知';
+            }
+
+            function getSeverityInfo(tsScore) {
+                if (tsScore <= 12) {
+                    return { text: '重伤，需紧急干预', badge: 'critical', badgeText: '重伤' };
+                } else if (tsScore >= 14 && tsScore <= 16) {
+                    return { text: '存活率高（约96%），病情相对较轻', badge: 'mild', badgeText: '轻症' };
+                } else {
+                    return { text: '中等风险，密切观察', badge: 'moderate', badgeText: '中等' };
+                }
+            }
+
+            function getPrognosisInfo(tsScore) {
+                if (tsScore >= 1 && tsScore <= 3) return '死亡率高达96%';
+                if (tsScore >= 4 && tsScore <= 13) return '经积极抢救可能存活';
+                if (tsScore >= 14) return '预后较好';
+                return '—';
+            }
+
+            // ----- 主更新函数 -----
+            function updateAll() {
+                try {
+                    const rVal = Number(respRate.value) || 0;
+                    const rScore = getRespScore(rVal);
+                    respScoreDisplay.textContent = rScore;
+
+                    const sVal = Number(sbpValue.value) || 0;
+                    const sScore = getSbpScore(sVal);
+                    sbpScoreDisplay.textContent = sScore;
+
+                    const dScore = getRadioValue(depthRadios);
+                    depthScoreDisplay.textContent = dScore;
+
+                    const cScore = getRadioValue(capillaryRadios);
+                    capillaryScoreDisplay.textContent = cScore;
+
+                    const eye = getRadioValue(gcsEye);
+                    const verb = getRadioValue(gcsVerbal);
+                    const motor = getRadioValue(gcsMotor);
+                    gcsEyeScore.textContent = eye;
+                    gcsVerbalScore.textContent = verb;
+                    gcsMotorScore.textContent = motor;
+
+                    const gcsSum = eye + verb + motor;
+                    gcsTotalScoreDisplay.textContent = gcsSum;
+                    gcsTotalDisplay.textContent = gcsSum;
+                    gcsStatusDisplay.textContent = '提示：' + getGcsStatus(gcsSum);
+
+                    const mapped = getGcsMapped(gcsSum);
+                    gcsMappedDisplay.textContent = mapped;
+
+                    const total = dScore + cScore + rScore + sScore + mapped;
+                    totalScoreDisplay.textContent = total;
+
+                    const severity = getSeverityInfo(total);
+                    severityText.textContent = severity.text;
+                    severityBadge.textContent = severity.badgeText;
+                    severityBadge.className = 'badge-severity ' + severity.badge;
+                    prognosisText.textContent = getPrognosisInfo(total);
+                } catch (e) {
+                    console.warn('更新评分时发生错误:', e);
+                }
+            }
+
+            // ----- 重置 -----
+            function resetAll() {
+                try {
+                    respRate.value = '16';
+                    sbpValue.value = '120';
+                    depthRadios.forEach(r => r.checked = (r.value === '1'));
+                    capillaryRadios.forEach(r => r.checked = (r.value === '2'));
+                    gcsEye.forEach(r => r.checked = (r.value === '4'));
+                    gcsVerbal.forEach(r => r.checked = (r.value === '5'));
+                    gcsMotor.forEach(r => r.checked = (r.value === '6'));
+                    patientName.value = '张三';
+                    patientAge.value = '36';
+                    document.querySelectorAll('input[name="gender"]').forEach(r => r.checked = (r.value === '男'));
+                    updateAll();
+                } catch (e) {
+                    alert('重置失败，请刷新页面重试。错误信息：' + e.message);
+                }
+            }
+
+            // ==========================================================
+            // ★★★ 打印：新窗口 + 移除占位文字 + 置顶 ★★★
+            // ==========================================================
+            function printViaNewWindow() {
+                printBtn.classList.add('printing');
+
+                // 1. 先更新所有数据，确保显示最新
+                updateAll();
+
+                // 2. 获取当前页面内容（克隆整个卡片）
+                const card = document.getElementById('printArea');
+                const cardClone = card.cloneNode(true);
+
+                // 3. 移除克隆中的按钮、引导提示和评分范围说明
+                const cloneBtnGroup = cardClone.querySelector('.btn-group');
+                if (cloneBtnGroup) cloneBtnGroup.remove();
+                const cloneGuide = cardClone.querySelector('.print-guide');
+                if (cloneGuide) cloneGuide.remove();
+                const clonePanel = cardClone.querySelector('.score-panel');
+                if (clonePanel) {
+                    const firstDiv = clonePanel.querySelector('div:first-child');
+                    if (firstDiv) firstDiv.remove();
+                    if (clonePanel.children.length === 0) clonePanel.remove();
+                }
+
+                // 4. ★★★ 移除所有包含“正在努力加载”的文本节点 ★★★
+                function removeLoadingText(node) {
+                    if (node.nodeType === Node.TEXT_NODE) {
+                        if (node.textContent.includes('正在努力加载')) {
+                            node.textContent = node.textContent.replace(/正在努力加载[，,]\s*请稍候/g, '').trim();
+                        }
+                        return;
+                    }
+                    const children = node.childNodes;
+                    for (let i = 0; i < children.length; i++) {
+                        removeLoadingText(children[i]);
+                    }
+                }
+                removeLoadingText(cardClone);
+
+                // 5. 确保日期输入框显示值
+                const clonedDateInput = cardClone.querySelector('#scoreDate');
+                if (clonedDateInput && scoreDate.value) {
+                    clonedDateInput.value = scoreDate.value;
+                }
+
+                // 6. 获取当前页面的样式（内联 <style>）
+                const styles = document.querySelectorAll('style');
+                let styleText = '';
+                styles.forEach(function(style) {
+                    styleText += style.innerHTML;
+                });
+
+                // 7. 打印专用样式（紧凑、一页、圆点、顶部置顶）
+                const printStyle = `
+                    /* 打印专用样式 */
+                    html, body {
+                        margin: 0;
+                        padding: 0;
+                        height: auto;
+                        display: block;
+                    }
+                    body { 
+                        background: white; 
+                        padding: 0 0.25in 0.15in 0.25in;  /* 顶部不留空白，置顶 */
+                        font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+                        font-size: 10pt;
+                        line-height: 1.3;
+                        display: block;
+                        align-items: normal;
+                        justify-content: normal;
+                    }
+                    .card { 
+                        max-width: 100%; 
+                        box-shadow: none; 
+                        border-radius: 0; 
+                        padding: 0; 
+                        background: white; 
+                        margin: 0;
+                    }
+                    .subhead { 
+                        border-bottom: 2px solid #333; 
+                        margin-bottom: 8px; 
+                        padding-bottom: 6px; 
+                    }
+                    .subhead .badge { display: none; }
+                    h1 { font-size: 16pt; color: #000; margin: 0; }
+                    .patient-info {
+                        background: transparent !important;
+                        border: none !important;
+                        padding: 4px 0 8px 0 !important;
+                        margin-bottom: 8px !important;
+                        border-radius: 0 !important;
+                        gap: 4px 16px;
+                        display: flex;
+                        flex-wrap: wrap;
+                        align-items: center;
+                    }
+                    .patient-info .field {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 4px 8px;
+                        flex-wrap: nowrap;
+                    }
+                    .patient-info .field label {
+                        font-weight: 600;
+                        color: #000;
+                        font-size: 9pt;
+                    }
+                    .patient-info .field input[type="text"],
+                    .patient-info .field input[type="number"],
+                    .patient-info .field input[type="date"] {
+                        border: none !important;
+                        border-bottom: 1px solid #333 !important;
+                        border-radius: 0 !important;
+                        background: transparent !important;
+                        padding: 1px 2px !important;
+                        font-weight: 600;
+                        font-size: 9pt;
+                        width: auto;
+                        min-width: 50px;
+                        color: #000;
+                    }
+                    .patient-info .radio-group-inline {
+                        background: transparent !important;
+                        border: none !important;
+                        padding: 0 !important;
+                        gap: 4px 10px;
+                        display: inline-flex;
+                    }
+                    .patient-info .radio-group-inline label {
+                        padding: 0 2px !important;
+                        background: transparent !important;
+                        font-size: 9pt;
+                        font-weight: 400;
+                        color: #000;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 2px;
+                    }
+                    .patient-info .radio-group-inline label:has(input:checked) {
+                        background: transparent !important;
+                        padding: 0 2px !important;
+                        font-weight: 600;
+                    }
+                    .patient-info .radio-group-inline input[type="radio"] {
+                        display: none !important;
+                    }
+                    .patient-info .radio-group-inline label:has(input:checked)::before {
+                        content: "● ";
+                        font-weight: 700;
+                        color: #000;
+                    }
+                    .patient-info .radio-group-inline label:not(:has(input:checked))::before {
+                        content: "○ ";
+                        font-weight: 400;
+                        color: #999;
+                    }
+
+                    .ts-table-wrap, .gcs-table-wrap {
+                        border: 1px solid #333 !important;
+                        border-radius: 0 !important;
+                        margin: 4px 0 6px !important;
+                        overflow: visible !important;
+                    }
+                    .ts-table, .gcs-table {
+                        border-collapse: collapse;
+                        font-size: 9pt;
+                        width: 100%;
+                    }
+                    .ts-table th, .gcs-table th {
+                        background: #e8edf4 !important;
+                        -webkit-print-color-adjust: exact;
+                        print-color-adjust: exact;
+                        border: 1px solid #333 !important;
+                        border-bottom: 2px solid #333 !important;
+                        padding: 4px 6px !important;
+                        font-weight: 700;
+                        color: #000;
+                        text-align: center;
+                    }
+                    .gcs-table th[colspan="3"] {
+                        background: #e0e8f0 !important;
+                        font-size: 11pt;
+                    }
+                    .ts-table td, .gcs-table td {
+                        border: 1px solid #333 !important;
+                        padding: 4px 6px !important;
+                        background: white !important;
+                        color: #000;
+                        vertical-align: middle;
+                        text-align: center;
+                    }
+                    .ts-table .label-col, .gcs-table .label-col {
+                        background: #f5f8fc !important;
+                        -webkit-print-color-adjust: exact;
+                        print-color-adjust: exact;
+                        font-weight: 600;
+                        color: #000;
+                        text-align: left;
+                        padding-left: 8px !important;
+                        width: 25%;
+                    }
+                    .ts-table .value-col, .gcs-table .value-col {
+                        width: 45%;
+                        text-align: center;
+                    }
+                    .ts-table .score-col, .gcs-table .score-col {
+                        background: #f8fcff !important;
+                        -webkit-print-color-adjust: exact;
+                        print-color-adjust: exact;
+                        font-weight: 700;
+                        color: #000;
+                        width: 15%;
+                    }
+                    .ts-table .total-row td, .gcs-table .total-row td {
+                        background: #eef3f8 !important;
+                        -webkit-print-color-adjust: exact;
+                        print-color-adjust: exact;
+                        border-top: 2px solid #333 !important;
+                        font-weight: 700;
+                        color: #000;
+                    }
+                    .ts-table .total-row .score-col, .gcs-table .total-row .score-col {
+                        font-size: 12pt;
+                    }
+                    .ts-table .hint-row td, .gcs-table .hint-row td {
+                        background: #f5faff !important;
+                        -webkit-print-color-adjust: exact;
+                        print-color-adjust: exact;
+                        border-top: 1px solid #333 !important;
+                        padding: 4px 8px !important;
+                        font-weight: 500;
+                        color: #000;
+                        text-align: left;
+                    }
+                    .ts-table .hint-row .hint-inline {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 4px 16px;
+                        align-items: center;
+                    }
+                    .ts-table .hint-row .badge-severity {
+                        background: #e2f0e6 !important;
+                        border: 1px solid #999 !important;
+                        color: #1f7840 !important;
+                        -webkit-print-color-adjust: exact;
+                        print-color-adjust: exact;
+                        padding: 1px 8px;
+                        border-radius: 12px;
+                        font-size: 8pt;
+                    }
+                    .ts-table .hint-row .badge-severity.critical {
+                        background: #fde8e8 !important;
+                        color: #b33c3c !important;
+                    }
+                    .ts-table .hint-row .badge-severity.moderate {
+                        background: #fff0d6 !important;
+                        color: #a8691a !important;
+                    }
+
+                    /* 表格内单选组（GCS）打印为圆点 */
+                    .gcs-table .radio-group-inline, .ts-table .radio-group-inline {
+                        background: transparent !important;
+                        border: none !important;
+                        padding: 0 !important;
+                        gap: 2px 6px !important;
+                        justify-content: center;
+                        display: flex;
+                        flex-wrap: wrap;
+                    }
+                    .gcs-table .radio-group-inline label, .ts-table .radio-group-inline label {
+                        background: transparent !important;
+                        padding: 0 2px !important;
+                        font-weight: 400;
+                        color: #555;
+                        font-size: 8pt;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 2px;
+                    }
+                    .gcs-table .radio-group-inline label:has(input:checked),
+                    .ts-table .radio-group-inline label:has(input:checked) {
+                        background: transparent !important;
+                        font-weight: 700;
+                        color: #000;
+                        padding: 0 2px !important;
+                        border: none !important;
+                    }
+                    .gcs-table .radio-group-inline input[type="radio"],
+                    .ts-table .radio-group-inline input[type="radio"] {
+                        display: none !important;
+                    }
+                    .gcs-table .radio-group-inline label:has(input:checked)::before,
+                    .ts-table .radio-group-inline label:has(input:checked)::before {
+                        content: "● ";
+                        font-weight: 700;
+                        color: #000;
+                    }
+                    .gcs-table .radio-group-inline label:not(:has(input:checked))::before,
+                    .ts-table .radio-group-inline label:not(:has(input:checked))::before {
+                        content: "○ ";
+                        font-weight: 400;
+                        color: #999;
+                    }
+
+                    /* 隐藏所有输入框（TS 中的 number 输入显示纯文本） */
+                    .ts-table .value-col input[type="number"] {
+                        border: none !important;
+                        background: transparent !important;
+                        text-align: center;
+                        font-weight: 600;
+                        font-size: 9pt;
+                        width: 50px;
+                        padding: 0 !important;
+                        color: #000;
+                    }
+                    /* 其他杂项 */
+                    .score-panel, .btn-group, .btn-reset, .btn-print, .print-guide {
+                        display: none !important;
+                    }
+                    .gcs-table .hint-row td {
+                        font-size: 8.5pt;
+                    }
+                    /* 压缩间距，确保一页 */
+                    .ts-table-wrap, .gcs-table-wrap {
+                        margin: 3px 0 4px !important;
+                    }
+                    .gcs-table-wrap {
+                        margin-top: 6px !important;
+                    }
+                    .patient-info {
+                        margin-bottom: 4px !important;
+                    }
+                `;
+
+                // 8. 构建打印窗口的 HTML
+                const docTitle = document.title || '创伤评分表';
+                const printHtml = `
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>${docTitle}</title>
+                        <style>${styleText}</style>
+                        <style>${printStyle}</style>
+                    </head>
+                    <body>
+                        ${cardClone.outerHTML}
+                    </body>
+                    </html>
+                `;
+
+                // 9. 打开新窗口
+                let printWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+                if (!printWindow) {
+                    alert('新窗口被浏览器拦截，请允许弹出窗口，或使用浏览器菜单中的“打印”功能。');
+                    printBtn.classList.remove('printing');
+                    return;
+                }
+
+                printWindow.document.write(printHtml);
+                printWindow.document.close();
+
+                printWindow.onload = function() {
+                    try {
+                        printWindow.focus();
+                        printWindow.print();
+                    } catch (e) {
+                        alert('打印失败：' + (e.message || '未知错误') + '\n请尝试使用浏览器菜单中的“打印”功能。');
+                    } finally {
+                        setTimeout(function() {
+                            printBtn.classList.remove('printing');
+                        }, 500);
+                    }
+                };
+
+                printWindow.onerror = function(err) {
+                    alert('打印预览加载失败，请尝试使用浏览器菜单中的“打印”功能。错误：' + err);
+                    printBtn.classList.remove('printing');
+                };
+            }
+
+            // ----- 设置默认日期 -----
+            function setDefaultDate() {
+                const today = new Date();
+                const y = today.getFullYear();
+                const m = String(today.getMonth() + 1).padStart(2, '0');
+                const d = String(today.getDate()).padStart(2, '0');
+                scoreDate.value = `${y}-${m}-${d}`;
+            }
+
+            // ----- 初始化 -----
+            function init() {
+                setDefaultDate();
+                respRate.addEventListener('input', updateAll);
+                sbpValue.addEventListener('input', updateAll);
+                const allRadios = [...depthRadios, ...capillaryRadios, ...gcsEye, ...gcsVerbal, ...gcsMotor];
+                allRadios.forEach(r => r.addEventListener('change', updateAll));
+                resetBtn.addEventListener('click', resetAll);
+                printBtn.addEventListener('click', printViaNewWindow);
+                updateAll();
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+        })();
+    </script>
+</body>
+</html>
