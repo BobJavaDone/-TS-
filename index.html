@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>创伤评分表 (TS) · 格拉斯哥GCS</title>
     <style>
-        /* 全局重置 & 基础样式 */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -55,8 +54,6 @@
             padding: 4px 16px;
             border-radius: 30px;
         }
-
-        /* 患者信息 */
         .patient-info {
             display: flex;
             flex-wrap: wrap;
@@ -98,15 +95,9 @@
             border-color: #1f6c9e;
             box-shadow: 0 0 0 3px rgba(31, 108, 158, 0.12);
         }
-        .patient-info .field input[type="text"] {
-            width: 100px;
-        }
-        .patient-info .field input[type="number"] {
-            width: 70px;
-        }
-        .patient-info .field input[type="date"] {
-            width: 150px;
-        }
+        .patient-info .field input[type="text"] { width: 100px; }
+        .patient-info .field input[type="number"] { width: 70px; }
+        .patient-info .field input[type="date"] { width: 150px; }
         .patient-info .radio-group-inline {
             display: flex;
             gap: 4px 12px;
@@ -138,23 +129,18 @@
             border-radius: 30px;
             padding: 2px 10px 2px 6px;
         }
-
-        /* 表格通用 */
-        .ts-table-wrap,
-        .gcs-table-wrap {
+        .ts-table-wrap, .gcs-table-wrap {
             margin: 12px 0 8px;
             border-radius: 20px;
             border: 1px solid #d4e3f2;
             overflow: hidden;
         }
-        .ts-table,
-        .gcs-table {
+        .ts-table, .gcs-table {
             width: 100%;
             border-collapse: collapse;
             font-size: 0.95rem;
         }
-        .ts-table th,
-        .gcs-table th {
+        .ts-table th, .gcs-table th {
             background: #eef4fa;
             color: #0a314a;
             font-weight: 600;
@@ -162,19 +148,14 @@
             text-align: center;
             border-bottom: 2px solid #cdddee;
         }
-        .ts-table td,
-        .gcs-table td {
+        .ts-table td, .gcs-table td {
             padding: 10px 12px;
             border-bottom: 1px solid #e2ebf3;
             vertical-align: middle;
             text-align: center;
         }
-        .ts-table tr:last-child td,
-        .gcs-table tr:last-child td {
-            border-bottom: none;
-        }
-        .ts-table .label-col,
-        .gcs-table .label-col {
+        .ts-table tr:last-child td, .gcs-table tr:last-child td { border-bottom: none; }
+        .ts-table .label-col, .gcs-table .label-col {
             font-weight: 600;
             color: #1f4662;
             text-align: left;
@@ -182,32 +163,24 @@
             background: #fafdff;
             width: 28%;
         }
-        .ts-table .value-col,
-        .gcs-table .value-col {
-            width: 44%;
-            text-align: center;
-        }
-        .ts-table .score-col,
-        .gcs-table .score-col {
+        .ts-table .value-col, .gcs-table .value-col { width: 44%; text-align: center; }
+        .ts-table .score-col, .gcs-table .score-col {
             width: 18%;
             text-align: center;
             font-weight: 700;
             color: #004b7c;
             background: #f8fcff;
         }
-        .ts-table .total-row td,
-        .gcs-table .total-row td {
+        .ts-table .total-row td, .gcs-table .total-row td {
             font-weight: 700;
             font-size: 1.05rem;
             background: #e7f1fa;
             border-top: 2px solid #b8d0e6;
         }
-        .ts-table .total-row .score-col,
-        .gcs-table .total-row .score-col {
+        .ts-table .total-row .score-col, .gcs-table .total-row .score-col {
             font-size: 1.3rem;
             color: #004b7c;
         }
-        /* 提示行 */
         .ts-table .hint-row td {
             background: #f5faff;
             padding: 8px 18px;
@@ -256,7 +229,6 @@
             color: #1f7840;
             border: 1px solid #b8d9c4;
         }
-
         .gcs-table .hint-row td {
             background: #f5faff;
             padding: 8px 18px;
@@ -265,8 +237,6 @@
             color: #1f4a69;
             border-top: 1px solid #d4e3f2;
         }
-
-        /* 表格内单选组 */
         .radio-group-inline {
             display: flex;
             flex-wrap: wrap;
@@ -300,7 +270,6 @@
             border-radius: 30px;
             padding: 1px 8px 1px 5px;
         }
-
         .ts-table .value-col input[type="number"] {
             width: 80px;
             padding: 4px 8px;
@@ -316,8 +285,6 @@
             border-color: #1f6c9e;
             box-shadow: 0 0 0 3px rgba(31, 108, 158, 0.12);
         }
-
-        /* 底部面板 */
         .score-panel {
             margin-top: 20px;
             display: flex;
@@ -335,8 +302,7 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-        .btn-reset,
-        .btn-print {
+        .btn-reset, .btn-print, .btn-save, .btn-export {
             background: white;
             border: 1px solid #b7cedf;
             color: #1e4b6b;
@@ -353,13 +319,11 @@
             user-select: none;
             touch-action: manipulation;
         }
-        .btn-reset:hover,
-        .btn-print:hover {
+        .btn-reset:hover, .btn-print:hover, .btn-save:hover, .btn-export:hover {
             background: #e5f0fc;
             border-color: #6f9bc2;
         }
-        .btn-reset:active,
-        .btn-print:active {
+        .btn-reset:active, .btn-print:active, .btn-save:active, .btn-export:active {
             background: #c8def5;
             transform: scale(0.96);
         }
@@ -367,6 +331,18 @@
             background: #e7f1fa;
             border-color: #8fb4d0;
         }
+        .btn-save {
+            background: #d4e8f7;
+            border-color: #6a9fc9;
+            color: #0f3b5a;
+        }
+        .btn-save:hover { background: #bddcf0; }
+        .btn-export {
+            background: #e8f0e6;
+            border-color: #7fa87f;
+            color: #1f4a2a;
+        }
+        .btn-export:hover { background: #d0e0cc; }
         .btn-print.printing {
             background: #b8d0e6;
             border-color: #5a7f9e;
@@ -375,7 +351,75 @@
             pointer-events: none;
             opacity: 0.7;
         }
-
+        .history-section {
+            margin-top: 24px;
+            border-top: 2px solid #e6edf4;
+            padding-top: 16px;
+        }
+        .history-section .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        .history-section h3 {
+            font-size: 1.1rem;
+            color: #0b2b44;
+        }
+        .history-table-wrap {
+            max-height: 320px;
+            overflow-y: auto;
+            border: 1px solid #d4e3f2;
+            border-radius: 16px;
+        }
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .history-table th {
+            background: #eef4fa;
+            color: #0a314a;
+            font-weight: 600;
+            padding: 8px 10px;
+            text-align: center;
+            border-bottom: 2px solid #cdddee;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+        .history-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #e2ebf3;
+            text-align: center;
+        }
+        .history-table tr:hover td { background: #f5faff; }
+        .history-empty {
+            text-align: center;
+            color: #8899aa;
+            padding: 20px 0;
+            font-size: 0.9rem;
+        }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a4b6d;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 500;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .toast.show { opacity: 1; }
+        .toast.success { background: #1f7840; }
+        .toast.error { background: #b33c3c; }
         .print-guide {
             margin-top: 12px;
             font-size: 0.85rem;
@@ -387,122 +431,60 @@
             border: 1px dashed #b8d0e6;
             display: block;
         }
-        .print-guide strong {
-            color: #1a4b6d;
-        }
+        .print-guide strong { color: #1a4b6d; }
 
-        /* 响应式（屏幕显示） */
         @media screen and (max-width: 700px) {
-            body {
-                padding: 8px;
-            }
-            .card {
-                padding: 16px 12px 20px;
-                border-radius: 24px;
-            }
-            h1 {
-                font-size: 1.4rem;
-            }
-            .patient-info {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 8px;
-                border-radius: 30px;
-                padding: 12px 16px;
-            }
-            .patient-info .field {
-                justify-content: space-between;
-            }
-            .patient-info .field input[type="text"] {
-                width: 80px;
-            }
-            .patient-info .field input[type="number"] {
-                width: 60px;
-            }
-            .patient-info .field input[type="date"] {
-                width: 130px;
-            }
-            .ts-table,
-            .gcs-table {
-                font-size: 0.82rem;
-            }
-            .ts-table th,
-            .gcs-table th {
-                padding: 6px 6px;
-            }
-            .ts-table td,
-            .gcs-table td {
-                padding: 6px 6px;
-            }
-            .radio-group-inline label {
-                font-size: 0.7rem;
-            }
-            .ts-table .value-col input[type="number"] {
-                width: 60px;
-                font-size: 0.8rem;
-            }
-            .ts-table .hint-row .hint-inline {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 4px;
-            }
-            .score-panel {
-                flex-direction: column;
-                align-items: stretch;
-                border-radius: 30px;
-                padding: 16px 20px;
-            }
-            .btn-group {
-                justify-content: center;
-            }
-            .btn-reset,
-            .btn-print {
-                justify-content: center;
-                padding: 10px 16px;
-                flex: 1;
-            }
-            .print-guide {
-                font-size: 0.75rem;
-                padding: 6px 12px;
-            }
+            body { padding: 8px; }
+            .card { padding: 16px 12px 20px; border-radius: 24px; }
+            h1 { font-size: 1.4rem; }
+            .patient-info { flex-direction: column; align-items: stretch; gap: 8px; border-radius: 30px; padding: 12px 16px; }
+            .patient-info .field { justify-content: space-between; }
+            .patient-info .field input[type="text"] { width: 80px; }
+            .patient-info .field input[type="number"] { width: 60px; }
+            .patient-info .field input[type="date"] { width: 130px; }
+            .ts-table, .gcs-table { font-size: 0.82rem; }
+            .ts-table th, .gcs-table th { padding: 6px 6px; }
+            .ts-table td, .gcs-table td { padding: 6px 6px; }
+            .radio-group-inline label { font-size: 0.7rem; }
+            .ts-table .value-col input[type="number"] { width: 60px; font-size: 0.8rem; }
+            .ts-table .hint-row .hint-inline { flex-direction: column; align-items: flex-start; gap: 4px; }
+            .score-panel { flex-direction: column; align-items: stretch; border-radius: 30px; padding: 16px 20px; }
+            .btn-group { justify-content: center; }
+            .btn-reset, .btn-print, .btn-save, .btn-export { justify-content: center; padding: 10px 16px; flex: 1; }
+            .print-guide { font-size: 0.75rem; padding: 6px 12px; }
+            .history-table { font-size: 0.75rem; }
+            .history-table th, .history-table td { padding: 4px 6px; }
         }
         @media screen and (max-width: 480px) {
-            .ts-table,
-            .gcs-table {
-                font-size: 0.7rem;
-            }
-            .ts-table th,
-            .gcs-table th {
-                padding: 4px 4px;
-            }
-            .ts-table td,
-            .gcs-table td {
-                padding: 4px 4px;
-            }
-            .radio-group-inline label {
-                font-size: 0.6rem;
-                padding: 0 3px;
-            }
-            .radio-group-inline {
-                gap: 2px 4px;
-                padding: 1px 4px;
-            }
-            .ts-table .value-col input[type="number"] {
-                width: 50px;
-                font-size: 0.7rem;
-                padding: 2px 4px;
-            }
+            .ts-table, .gcs-table { font-size: 0.7rem; }
+            .ts-table th, .gcs-table th { padding: 4px 4px; }
+            .ts-table td, .gcs-table td { padding: 4px 4px; }
+            .radio-group-inline label { font-size: 0.6rem; padding: 0 3px; }
+            .radio-group-inline { gap: 2px 4px; padding: 1px 4px; }
+            .ts-table .value-col input[type="number"] { width: 50px; font-size: 0.7rem; padding: 2px 4px; }
+        }
+        @media print {
+            .btn-save, .btn-export, .history-section, .toast { display: none !important; }
+            body { background: white; padding: 0.2in 0.25in; margin: 0; display: block; font-size: 10pt; }
+            .card { max-width: 100%; box-shadow: none; border-radius: 0; padding: 0; background: white; }
+            .subhead .badge { display: none; }
+            .btn-group, .btn-reset, .btn-print { display: none !important; }
+            .score-panel .btn-group { display: none !important; }
+            .score-panel > div:first-child { display: none !important; }
+            .score-panel { background: transparent !important; border: none !important; padding: 0 !important; margin-top: 0 !important; }
+            .print-guide { display: none !important; }
+            .history-section { display: none !important; }
         }
     </style>
 </head>
 <body>
+    <div class="toast" id="toast"></div>
     <div class="card" id="printArea">
         <div class="subhead">
             <h1>🚑 院前创伤评分表（TS）</h1>
             <span class="badge">格拉斯哥GCS · 院前</span>
         </div>
 
-        <!-- 患者信息 -->
         <div class="patient-info" id="patientInfo">
             <div class="field">
                 <label>姓名</label>
@@ -525,7 +507,6 @@
             </div>
         </div>
 
-        <!-- TS 评分表格 -->
         <div class="ts-table-wrap">
             <table class="ts-table" id="tsTable">
                 <thead>
@@ -600,7 +581,6 @@
             </table>
         </div>
 
-        <!-- GCS 评分表格 -->
         <div class="gcs-table-wrap" style="margin-top:18px;">
             <table class="gcs-table" id="gcsTable">
                 <thead>
@@ -666,602 +646,529 @@
             </table>
         </div>
 
-        <!-- 操作按钮 -->
         <div class="score-panel">
             <div style="font-size:0.9rem;color:#1f4a69;font-weight:500;">
                 TS 评分范围 1–16 分，分值越高创伤程度越轻。
             </div>
             <div class="btn-group">
                 <button class="btn-reset" id="resetBtn" type="button">⟲ 重置</button>
+                <button class="btn-save" id="saveBtn" type="button">💾 保存记录</button>
+                <button class="btn-export" id="exportBtn" type="button">📊 导出CSV</button>
                 <button class="btn-print" id="printBtn" type="button">🖨️ 打印</button>
             </div>
         </div>
 
-        <!-- 打印引导提示（手机浏览器常见问题） -->
         <div class="print-guide">
             💡 <strong>提示：</strong> 若点击“打印”无反应，请尝试点击浏览器右上角菜单 → <strong>“打印”</strong> 或 <strong>“分享→打印”</strong>。
+        </div>
+
+        <div class="history-section">
+            <div class="history-header">
+                <h3>📋 历史记录</h3>
+                <span style="font-size:0.8rem;color:#6a8aa0;">共 <span id="recordCount">0</span> 条</span>
+            </div>
+            <div class="history-table-wrap">
+                <table class="history-table" id="historyTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>姓名</th>
+                            <th>性别</th>
+                            <th>年龄</th>
+                            <th>日期</th>
+                            <th>TS总分</th>
+                            <th>GCS总分</th>
+                            <th>伤情</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyBody">
+                        <tr><td colspan="8" class="history-empty">暂无记录，请填写评分后点击“保存记录”</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <script>
-        (function() {
-            'use strict';
+        // ================================================================
+        // DOM 元素引用
+        // ================================================================
+        const patientName = document.getElementById('patientName');
+        const patientAge = document.getElementById('patientAge');
+        const scoreDate = document.getElementById('scoreDate');
+        const respRate = document.getElementById('respRate');
+        const sbpValue = document.getElementById('sbpValue');
+        const respScoreDisplay = document.getElementById('respScoreDisplay');
+        const sbpScoreDisplay = document.getElementById('sbpScoreDisplay');
+        const depthScoreDisplay = document.getElementById('depthScoreDisplay');
+        const capillaryScoreDisplay = document.getElementById('capillaryScoreDisplay');
+        const gcsMappedDisplay = document.getElementById('gcsMappedDisplay');
+        const totalScoreDisplay = document.getElementById('totalScoreDisplay');
+        const gcsTotalDisplay = document.getElementById('gcsTotalDisplay');
+        const severityText = document.getElementById('severityText');
+        const severityBadge = document.getElementById('severityBadge');
+        const prognosisText = document.getElementById('prognosisText');
+        const gcsEyeScore = document.getElementById('gcsEyeScore');
+        const gcsVerbalScore = document.getElementById('gcsVerbalScore');
+        const gcsMotorScore = document.getElementById('gcsMotorScore');
+        const gcsTotalScoreDisplay = document.getElementById('gcsTotalScoreDisplay');
+        const gcsStatusDisplay = document.getElementById('gcsStatusDisplay');
+        const depthRadios = document.querySelectorAll('input[name="depth"]');
+        const capillaryRadios = document.querySelectorAll('input[name="capillary"]');
+        const gcsEye = document.querySelectorAll('input[name="gcsEye"]');
+        const gcsVerbal = document.querySelectorAll('input[name="gcsVerbal"]');
+        const gcsMotor = document.querySelectorAll('input[name="gcsMotor"]');
+        const resetBtn = document.getElementById('resetBtn');
+        const printBtn = document.getElementById('printBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const historyBody = document.getElementById('historyBody');
+        const recordCount = document.getElementById('recordCount');
+        const toast = document.getElementById('toast');
 
-            // ----- DOM 元素引用 -----
-            const patientName = document.getElementById('patientName');
-            const patientAge = document.getElementById('patientAge');
-            const scoreDate = document.getElementById('scoreDate');
-
-            const respRate = document.getElementById('respRate');
-            const sbpValue = document.getElementById('sbpValue');
-            const respScoreDisplay = document.getElementById('respScoreDisplay');
-            const sbpScoreDisplay = document.getElementById('sbpScoreDisplay');
-            const depthScoreDisplay = document.getElementById('depthScoreDisplay');
-            const capillaryScoreDisplay = document.getElementById('capillaryScoreDisplay');
-            const gcsMappedDisplay = document.getElementById('gcsMappedDisplay');
-            const totalScoreDisplay = document.getElementById('totalScoreDisplay');
-            const gcsTotalDisplay = document.getElementById('gcsTotalDisplay');
-
-            const severityText = document.getElementById('severityText');
-            const severityBadge = document.getElementById('severityBadge');
-            const prognosisText = document.getElementById('prognosisText');
-
-            const gcsEyeScore = document.getElementById('gcsEyeScore');
-            const gcsVerbalScore = document.getElementById('gcsVerbalScore');
-            const gcsMotorScore = document.getElementById('gcsMotorScore');
-            const gcsTotalScoreDisplay = document.getElementById('gcsTotalScoreDisplay');
-            const gcsStatusDisplay = document.getElementById('gcsStatusDisplay');
-
-            const depthRadios = document.querySelectorAll('input[name="depth"]');
-            const capillaryRadios = document.querySelectorAll('input[name="capillary"]');
-            const gcsEye = document.querySelectorAll('input[name="gcsEye"]');
-            const gcsVerbal = document.querySelectorAll('input[name="gcsVerbal"]');
-            const gcsMotor = document.querySelectorAll('input[name="gcsMotor"]');
-
-            const resetBtn = document.getElementById('resetBtn');
-            const printBtn = document.getElementById('printBtn');
-
-            // ----- 工具函数 -----
-            function getRadioValue(radios) {
-                for (let r of radios) {
-                    if (r.checked) return Number(r.value);
-                }
-                return 0;
+        // ================================================================
+        // 工具函数
+        // ================================================================
+        function getRadioValue(radios) {
+            for (let r of radios) if (r.checked) return Number(r.value);
+            return 0;
+        }
+        function getRespScore(val) {
+            const v = Number(val);
+            if (isNaN(v) || v < 0) return 0;
+            if (v >= 10 && v <= 24) return 4;
+            if (v >= 25 && v <= 35) return 3;
+            if (v >= 36) return 2;
+            if (v >= 1 && v <= 9) return 1;
+            if (v === 0) return 0;
+            if (v > 60) return 2;
+            return 0;
+        }
+        function getSbpScore(val) {
+            const v = Number(val);
+            if (isNaN(v) || v < 0) return 0;
+            if (v >= 90) return 4;
+            if (v >= 70 && v <= 89) return 3;
+            if (v >= 50 && v <= 69) return 2;
+            if (v >= 1 && v <= 49) return 1;
+            if (v === 0) return 0;
+            if (v > 300) return 4;
+            return 0;
+        }
+        function getGcsMapped(gcsSum) {
+            if (gcsSum >= 14 && gcsSum <= 15) return 5;
+            if (gcsSum >= 11 && gcsSum <= 13) return 4;
+            if (gcsSum >= 8 && gcsSum <= 10) return 3;
+            if (gcsSum >= 5 && gcsSum <= 7) return 2;
+            if (gcsSum >= 3 && gcsSum <= 4) return 1;
+            return 0;
+        }
+        function getGcsStatus(gcsSum) {
+            if (gcsSum === 15) return '正常';
+            if (gcsSum >= 13) return '轻度昏迷';
+            if (gcsSum >= 9) return '中度昏迷';
+            if (gcsSum >= 3) return '重度昏迷';
+            return '未知';
+        }
+        function getSeverityInfo(tsScore) {
+            if (tsScore <= 12) {
+                return { text: '重伤，需紧急干预', badge: 'critical', badgeText: '重伤' };
+            } else if (tsScore >= 14 && tsScore <= 16) {
+                return { text: '存活率高（约96%），病情相对较轻', badge: 'mild', badgeText: '轻症' };
+            } else {
+                return { text: '中等风险，密切观察', badge: 'moderate', badgeText: '中等' };
             }
+        }
+        function getPrognosisInfo(tsScore) {
+            if (tsScore >= 1 && tsScore <= 3) return '死亡率高达96%';
+            if (tsScore >= 4 && tsScore <= 13) return '经积极抢救可能存活';
+            if (tsScore >= 14) return '预后较好';
+            return '—';
+        }
 
-            function getRespScore(val) {
-                const v = Number(val);
-                if (isNaN(v) || v < 0) return 0;
-                if (v >= 10 && v <= 24) return 4;
-                if (v >= 25 && v <= 35) return 3;
-                if (v >= 36) return 2;
-                if (v >= 1 && v <= 9) return 1;
-                if (v === 0) return 0;
-                if (v > 60) return 2;
-                return 0;
+        function updateAll() {
+            try {
+                const rVal = Number(respRate.value) || 0;
+                const rScore = getRespScore(rVal);
+                respScoreDisplay.textContent = rScore;
+                const sVal = Number(sbpValue.value) || 0;
+                const sScore = getSbpScore(sVal);
+                sbpScoreDisplay.textContent = sScore;
+                const dScore = getRadioValue(depthRadios);
+                depthScoreDisplay.textContent = dScore;
+                const cScore = getRadioValue(capillaryRadios);
+                capillaryScoreDisplay.textContent = cScore;
+                const eye = getRadioValue(gcsEye);
+                const verb = getRadioValue(gcsVerbal);
+                const motor = getRadioValue(gcsMotor);
+                gcsEyeScore.textContent = eye;
+                gcsVerbalScore.textContent = verb;
+                gcsMotorScore.textContent = motor;
+                const gcsSum = eye + verb + motor;
+                gcsTotalScoreDisplay.textContent = gcsSum;
+                gcsTotalDisplay.textContent = gcsSum;
+                gcsStatusDisplay.textContent = '提示：' + getGcsStatus(gcsSum);
+                const mapped = getGcsMapped(gcsSum);
+                gcsMappedDisplay.textContent = mapped;
+                const total = dScore + cScore + rScore + sScore + mapped;
+                totalScoreDisplay.textContent = total;
+                const severity = getSeverityInfo(total);
+                severityText.textContent = severity.text;
+                severityBadge.textContent = severity.badgeText;
+                severityBadge.className = 'badge-severity ' + severity.badge;
+                prognosisText.textContent = getPrognosisInfo(total);
+            } catch (e) {
+                console.warn('更新评分时发生错误:', e);
             }
+        }
 
-            function getSbpScore(val) {
-                const v = Number(val);
-                if (isNaN(v) || v < 0) return 0;
-                if (v >= 90) return 4;
-                if (v >= 70 && v <= 89) return 3;
-                if (v >= 50 && v <= 69) return 2;
-                if (v >= 1 && v <= 49) return 1;
-                if (v === 0) return 0;
-                if (v > 300) return 4;
-                return 0;
-            }
-
-            function getGcsMapped(gcsSum) {
-                if (gcsSum >= 14 && gcsSum <= 15) return 5;
-                if (gcsSum >= 11 && gcsSum <= 13) return 4;
-                if (gcsSum >= 8 && gcsSum <= 10) return 3;
-                if (gcsSum >= 5 && gcsSum <= 7) return 2;
-                if (gcsSum >= 3 && gcsSum <= 4) return 1;
-                return 0;
-            }
-
-            function getGcsStatus(gcsSum) {
-                if (gcsSum === 15) return '正常';
-                if (gcsSum >= 13) return '轻度昏迷';
-                if (gcsSum >= 9) return '中度昏迷';
-                if (gcsSum >= 3) return '重度昏迷';
-                return '未知';
-            }
-
-            function getSeverityInfo(tsScore) {
-                if (tsScore <= 12) {
-                    return { text: '重伤，需紧急干预', badge: 'critical', badgeText: '重伤' };
-                } else if (tsScore >= 14 && tsScore <= 16) {
-                    return { text: '存活率高（约96%），病情相对较轻', badge: 'mild', badgeText: '轻症' };
-                } else {
-                    return { text: '中等风险，密切观察', badge: 'moderate', badgeText: '中等' };
-                }
-            }
-
-            function getPrognosisInfo(tsScore) {
-                if (tsScore >= 1 && tsScore <= 3) return '死亡率高达96%';
-                if (tsScore >= 4 && tsScore <= 13) return '经积极抢救可能存活';
-                if (tsScore >= 14) return '预后较好';
-                return '—';
-            }
-
-            // ----- 主更新函数 -----
-            function updateAll() {
-                try {
-                    const rVal = Number(respRate.value) || 0;
-                    const rScore = getRespScore(rVal);
-                    respScoreDisplay.textContent = rScore;
-
-                    const sVal = Number(sbpValue.value) || 0;
-                    const sScore = getSbpScore(sVal);
-                    sbpScoreDisplay.textContent = sScore;
-
-                    const dScore = getRadioValue(depthRadios);
-                    depthScoreDisplay.textContent = dScore;
-
-                    const cScore = getRadioValue(capillaryRadios);
-                    capillaryScoreDisplay.textContent = cScore;
-
-                    const eye = getRadioValue(gcsEye);
-                    const verb = getRadioValue(gcsVerbal);
-                    const motor = getRadioValue(gcsMotor);
-                    gcsEyeScore.textContent = eye;
-                    gcsVerbalScore.textContent = verb;
-                    gcsMotorScore.textContent = motor;
-
-                    const gcsSum = eye + verb + motor;
-                    gcsTotalScoreDisplay.textContent = gcsSum;
-                    gcsTotalDisplay.textContent = gcsSum;
-                    gcsStatusDisplay.textContent = '提示：' + getGcsStatus(gcsSum);
-
-                    const mapped = getGcsMapped(gcsSum);
-                    gcsMappedDisplay.textContent = mapped;
-
-                    const total = dScore + cScore + rScore + sScore + mapped;
-                    totalScoreDisplay.textContent = total;
-
-                    const severity = getSeverityInfo(total);
-                    severityText.textContent = severity.text;
-                    severityBadge.textContent = severity.badgeText;
-                    severityBadge.className = 'badge-severity ' + severity.badge;
-                    prognosisText.textContent = getPrognosisInfo(total);
-                } catch (e) {
-                    console.warn('更新评分时发生错误:', e);
-                }
-            }
-
-            // ----- 重置 -----
-            function resetAll() {
-                try {
-                    respRate.value = '16';
-                    sbpValue.value = '120';
-                    depthRadios.forEach(r => r.checked = (r.value === '1'));
-                    capillaryRadios.forEach(r => r.checked = (r.value === '2'));
-                    gcsEye.forEach(r => r.checked = (r.value === '4'));
-                    gcsVerbal.forEach(r => r.checked = (r.value === '5'));
-                    gcsMotor.forEach(r => r.checked = (r.value === '6'));
-                    patientName.value = '张三';
-                    patientAge.value = '36';
-                    document.querySelectorAll('input[name="gender"]').forEach(r => r.checked = (r.value === '男'));
-                    updateAll();
-                } catch (e) {
-                    alert('重置失败，请刷新页面重试。错误信息：' + e.message);
-                }
-            }
-
-            // ==========================================================
-            // ★★★ 打印：新窗口 + 移除占位文字 + 置顶 ★★★
-            // ==========================================================
-            function printViaNewWindow() {
-                printBtn.classList.add('printing');
-
-                // 1. 先更新所有数据，确保显示最新
+        function resetAll() {
+            try {
+                respRate.value = '16';
+                sbpValue.value = '120';
+                depthRadios.forEach(r => r.checked = (r.value === '1'));
+                capillaryRadios.forEach(r => r.checked = (r.value === '2'));
+                gcsEye.forEach(r => r.checked = (r.value === '4'));
+                gcsVerbal.forEach(r => r.checked = (r.value === '5'));
+                gcsMotor.forEach(r => r.checked = (r.value === '6'));
+                patientName.value = '张三';
+                patientAge.value = '36';
+                document.querySelectorAll('input[name="gender"]').forEach(r => r.checked = (r.value === '男'));
                 updateAll();
+            } catch (e) {
+                alert('重置失败，请刷新页面重试。错误信息：' + e.message);
+            }
+        }
 
-                // 2. 获取当前页面内容（克隆整个卡片）
-                const card = document.getElementById('printArea');
-                const cardClone = card.cloneNode(true);
+        let toastTimer = null;
+        function showToast(message, type = '') {
+            toast.textContent = message;
+            toast.className = 'toast ' + type + ' show';
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
 
-                // 3. 移除克隆中的按钮、引导提示和评分范围说明
-                const cloneBtnGroup = cardClone.querySelector('.btn-group');
-                if (cloneBtnGroup) cloneBtnGroup.remove();
-                const cloneGuide = cardClone.querySelector('.print-guide');
-                if (cloneGuide) cloneGuide.remove();
-                const clonePanel = cardClone.querySelector('.score-panel');
-                if (clonePanel) {
-                    const firstDiv = clonePanel.querySelector('div:first-child');
-                    if (firstDiv) firstDiv.remove();
-                    if (clonePanel.children.length === 0) clonePanel.remove();
-                }
-
-                // 4. ★★★ 移除所有包含“正在努力加载”的文本节点 ★★★
-                function removeLoadingText(node) {
-                    if (node.nodeType === Node.TEXT_NODE) {
-                        if (node.textContent.includes('正在努力加载')) {
-                            node.textContent = node.textContent.replace(/正在努力加载[，,]\s*请稍候/g, '').trim();
-                        }
-                        return;
-                    }
-                    const children = node.childNodes;
-                    for (let i = 0; i < children.length; i++) {
-                        removeLoadingText(children[i]);
-                    }
-                }
-                removeLoadingText(cardClone);
-
-                // 5. 确保日期输入框显示值
-                const clonedDateInput = cardClone.querySelector('#scoreDate');
-                if (clonedDateInput && scoreDate.value) {
-                    clonedDateInput.value = scoreDate.value;
-                }
-
-                // 6. 获取当前页面的样式（内联 <style>）
-                const styles = document.querySelectorAll('style');
-                let styleText = '';
-                styles.forEach(function(style) {
-                    styleText += style.innerHTML;
+        // ================================================================
+        // ★★★ 保存记录（调用 /api/save）★★★
+        // ================================================================
+        async function saveRecord() {
+            updateAll();
+            const genderRadios = document.querySelectorAll('input[name="gender"]');
+            let gender = '男';
+            for (let r of genderRadios) {
+                if (r.checked) { gender = r.value; break; }
+            }
+            const record = {
+                name: patientName.value || '未填写',
+                gender: gender,
+                age: Number(patientAge.value) || 0,
+                date: scoreDate.value || new Date().toISOString().split('T')[0],
+                resp_rate: Number(respRate.value) || 0,
+                resp_score: Number(respScoreDisplay.textContent) || 0,
+                depth_score: Number(depthScoreDisplay.textContent) || 0,
+                sbp: Number(sbpValue.value) || 0,
+                sbp_score: Number(sbpScoreDisplay.textContent) || 0,
+                capillary_score: Number(capillaryScoreDisplay.textContent) || 0,
+                gcs_mapped: Number(gcsMappedDisplay.textContent) || 0,
+                ts_total: Number(totalScoreDisplay.textContent) || 0,
+                gcs_eye: Number(gcsEyeScore.textContent) || 0,
+                gcs_verbal: Number(gcsVerbalScore.textContent) || 0,
+                gcs_motor: Number(gcsMotorScore.textContent) || 0,
+                gcs_total: Number(gcsTotalScoreDisplay.textContent) || 0,
+                severity: severityText.textContent || '',
+                prognosis: prognosisText.textContent || '',
+                created_at: new Date().toISOString()
+            };
+            try {
+                const response = await fetch('/api/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(record)
                 });
+                const result = await response.json();
+                if (result.success) {
+                    showToast('✅ 记录保存成功！', 'success');
+                    await loadHistory();
+                } else {
+                    showToast('❌ 保存失败：' + (result.error || '未知错误'), 'error');
+                }
+            } catch (err) {
+                console.error('保存异常:', err);
+                showToast('❌ 保存失败：' + err.message, 'error');
+            }
+        }
 
-                // 7. 打印专用样式（紧凑、一页、圆点、顶部置顶）
-                const printStyle = `
-                    /* 打印专用样式 */
-                    html, body {
-                        margin: 0;
-                        padding: 0;
-                        height: auto;
-                        display: block;
-                    }
-                    body { 
-                        background: white; 
-                        padding: 0 0.25in 0.15in 0.25in;  /* 顶部不留空白，置顶 */
-                        font-family: 'Segoe UI', Roboto, Arial, sans-serif;
-                        font-size: 10pt;
-                        line-height: 1.3;
-                        display: block;
-                        align-items: normal;
-                        justify-content: normal;
-                    }
-                    .card { 
-                        max-width: 100%; 
-                        box-shadow: none; 
-                        border-radius: 0; 
-                        padding: 0; 
-                        background: white; 
-                        margin: 0;
-                    }
-                    .subhead { 
-                        border-bottom: 2px solid #333; 
-                        margin-bottom: 8px; 
-                        padding-bottom: 6px; 
-                    }
-                    .subhead .badge { display: none; }
-                    h1 { font-size: 16pt; color: #000; margin: 0; }
-                    .patient-info {
-                        background: transparent !important;
-                        border: none !important;
-                        padding: 4px 0 8px 0 !important;
-                        margin-bottom: 8px !important;
-                        border-radius: 0 !important;
-                        gap: 4px 16px;
-                        display: flex;
-                        flex-wrap: wrap;
-                        align-items: center;
-                    }
-                    .patient-info .field {
-                        display: inline-flex;
-                        align-items: center;
-                        gap: 4px 8px;
-                        flex-wrap: nowrap;
-                    }
-                    .patient-info .field label {
-                        font-weight: 600;
-                        color: #000;
-                        font-size: 9pt;
-                    }
-                    .patient-info .field input[type="text"],
-                    .patient-info .field input[type="number"],
-                    .patient-info .field input[type="date"] {
-                        border: none !important;
-                        border-bottom: 1px solid #333 !important;
-                        border-radius: 0 !important;
-                        background: transparent !important;
-                        padding: 1px 2px !important;
-                        font-weight: 600;
-                        font-size: 9pt;
-                        width: auto;
-                        min-width: 50px;
-                        color: #000;
-                    }
-                    .patient-info .radio-group-inline {
-                        background: transparent !important;
-                        border: none !important;
-                        padding: 0 !important;
-                        gap: 4px 10px;
-                        display: inline-flex;
-                    }
-                    .patient-info .radio-group-inline label {
-                        padding: 0 2px !important;
-                        background: transparent !important;
-                        font-size: 9pt;
-                        font-weight: 400;
-                        color: #000;
-                        display: inline-flex;
-                        align-items: center;
-                        gap: 2px;
-                    }
-                    .patient-info .radio-group-inline label:has(input:checked) {
-                        background: transparent !important;
-                        padding: 0 2px !important;
-                        font-weight: 600;
-                    }
-                    .patient-info .radio-group-inline input[type="radio"] {
-                        display: none !important;
-                    }
-                    .patient-info .radio-group-inline label:has(input:checked)::before {
-                        content: "● ";
-                        font-weight: 700;
-                        color: #000;
-                    }
-                    .patient-info .radio-group-inline label:not(:has(input:checked))::before {
-                        content: "○ ";
-                        font-weight: 400;
-                        color: #999;
-                    }
-
-                    .ts-table-wrap, .gcs-table-wrap {
-                        border: 1px solid #333 !important;
-                        border-radius: 0 !important;
-                        margin: 4px 0 6px !important;
-                        overflow: visible !important;
-                    }
-                    .ts-table, .gcs-table {
-                        border-collapse: collapse;
-                        font-size: 9pt;
-                        width: 100%;
-                    }
-                    .ts-table th, .gcs-table th {
-                        background: #e8edf4 !important;
-                        -webkit-print-color-adjust: exact;
-                        print-color-adjust: exact;
-                        border: 1px solid #333 !important;
-                        border-bottom: 2px solid #333 !important;
-                        padding: 4px 6px !important;
-                        font-weight: 700;
-                        color: #000;
-                        text-align: center;
-                    }
-                    .gcs-table th[colspan="3"] {
-                        background: #e0e8f0 !important;
-                        font-size: 11pt;
-                    }
-                    .ts-table td, .gcs-table td {
-                        border: 1px solid #333 !important;
-                        padding: 4px 6px !important;
-                        background: white !important;
-                        color: #000;
-                        vertical-align: middle;
-                        text-align: center;
-                    }
-                    .ts-table .label-col, .gcs-table .label-col {
-                        background: #f5f8fc !important;
-                        -webkit-print-color-adjust: exact;
-                        print-color-adjust: exact;
-                        font-weight: 600;
-                        color: #000;
-                        text-align: left;
-                        padding-left: 8px !important;
-                        width: 25%;
-                    }
-                    .ts-table .value-col, .gcs-table .value-col {
-                        width: 45%;
-                        text-align: center;
-                    }
-                    .ts-table .score-col, .gcs-table .score-col {
-                        background: #f8fcff !important;
-                        -webkit-print-color-adjust: exact;
-                        print-color-adjust: exact;
-                        font-weight: 700;
-                        color: #000;
-                        width: 15%;
-                    }
-                    .ts-table .total-row td, .gcs-table .total-row td {
-                        background: #eef3f8 !important;
-                        -webkit-print-color-adjust: exact;
-                        print-color-adjust: exact;
-                        border-top: 2px solid #333 !important;
-                        font-weight: 700;
-                        color: #000;
-                    }
-                    .ts-table .total-row .score-col, .gcs-table .total-row .score-col {
-                        font-size: 12pt;
-                    }
-                    .ts-table .hint-row td, .gcs-table .hint-row td {
-                        background: #f5faff !important;
-                        -webkit-print-color-adjust: exact;
-                        print-color-adjust: exact;
-                        border-top: 1px solid #333 !important;
-                        padding: 4px 8px !important;
-                        font-weight: 500;
-                        color: #000;
-                        text-align: left;
-                    }
-                    .ts-table .hint-row .hint-inline {
-                        display: flex;
-                        flex-wrap: wrap;
-                        gap: 4px 16px;
-                        align-items: center;
-                    }
-                    .ts-table .hint-row .badge-severity {
-                        background: #e2f0e6 !important;
-                        border: 1px solid #999 !important;
-                        color: #1f7840 !important;
-                        -webkit-print-color-adjust: exact;
-                        print-color-adjust: exact;
-                        padding: 1px 8px;
-                        border-radius: 12px;
-                        font-size: 8pt;
-                    }
-                    .ts-table .hint-row .badge-severity.critical {
-                        background: #fde8e8 !important;
-                        color: #b33c3c !important;
-                    }
-                    .ts-table .hint-row .badge-severity.moderate {
-                        background: #fff0d6 !important;
-                        color: #a8691a !important;
-                    }
-
-                    /* 表格内单选组（GCS）打印为圆点 */
-                    .gcs-table .radio-group-inline, .ts-table .radio-group-inline {
-                        background: transparent !important;
-                        border: none !important;
-                        padding: 0 !important;
-                        gap: 2px 6px !important;
-                        justify-content: center;
-                        display: flex;
-                        flex-wrap: wrap;
-                    }
-                    .gcs-table .radio-group-inline label, .ts-table .radio-group-inline label {
-                        background: transparent !important;
-                        padding: 0 2px !important;
-                        font-weight: 400;
-                        color: #555;
-                        font-size: 8pt;
-                        display: inline-flex;
-                        align-items: center;
-                        gap: 2px;
-                    }
-                    .gcs-table .radio-group-inline label:has(input:checked),
-                    .ts-table .radio-group-inline label:has(input:checked) {
-                        background: transparent !important;
-                        font-weight: 700;
-                        color: #000;
-                        padding: 0 2px !important;
-                        border: none !important;
-                    }
-                    .gcs-table .radio-group-inline input[type="radio"],
-                    .ts-table .radio-group-inline input[type="radio"] {
-                        display: none !important;
-                    }
-                    .gcs-table .radio-group-inline label:has(input:checked)::before,
-                    .ts-table .radio-group-inline label:has(input:checked)::before {
-                        content: "● ";
-                        font-weight: 700;
-                        color: #000;
-                    }
-                    .gcs-table .radio-group-inline label:not(:has(input:checked))::before,
-                    .ts-table .radio-group-inline label:not(:has(input:checked))::before {
-                        content: "○ ";
-                        font-weight: 400;
-                        color: #999;
-                    }
-
-                    /* 隐藏所有输入框（TS 中的 number 输入显示纯文本） */
-                    .ts-table .value-col input[type="number"] {
-                        border: none !important;
-                        background: transparent !important;
-                        text-align: center;
-                        font-weight: 600;
-                        font-size: 9pt;
-                        width: 50px;
-                        padding: 0 !important;
-                        color: #000;
-                    }
-                    /* 其他杂项 */
-                    .score-panel, .btn-group, .btn-reset, .btn-print, .print-guide {
-                        display: none !important;
-                    }
-                    .gcs-table .hint-row td {
-                        font-size: 8.5pt;
-                    }
-                    /* 压缩间距，确保一页 */
-                    .ts-table-wrap, .gcs-table-wrap {
-                        margin: 3px 0 4px !important;
-                    }
-                    .gcs-table-wrap {
-                        margin-top: 6px !important;
-                    }
-                    .patient-info {
-                        margin-bottom: 4px !important;
-                    }
-                `;
-
-                // 8. 构建打印窗口的 HTML
-                const docTitle = document.title || '创伤评分表';
-                const printHtml = `
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <meta charset="UTF-8">
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <title>${docTitle}</title>
-                        <style>${styleText}</style>
-                        <style>${printStyle}</style>
-                    </head>
-                    <body>
-                        ${cardClone.outerHTML}
-                    </body>
-                    </html>
-                `;
-
-                // 9. 打开新窗口
-                let printWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
-                if (!printWindow) {
-                    alert('新窗口被浏览器拦截，请允许弹出窗口，或使用浏览器菜单中的“打印”功能。');
-                    printBtn.classList.remove('printing');
+        // ================================================================
+        // ★★★ 加载历史记录（调用 /api/list）★★★
+        // ================================================================
+        async function loadHistory() {
+            try {
+                const response = await fetch('/api/list');
+                const data = await response.json();
+                if (data.error) {
+                    historyBody.innerHTML = `<tr><td colspan="8" class="history-empty">加载失败：${data.error}</td></tr>`;
+                    recordCount.textContent = '0';
                     return;
                 }
+                const tbody = historyBody;
+                tbody.innerHTML = '';
+                if (!data || data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="8" class="history-empty">暂无记录</td></tr>';
+                    recordCount.textContent = '0';
+                    return;
+                }
+                let index = 1;
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${index}</td>
+                        <td>${row.name || '—'}</td>
+                        <td>${row.gender || '—'}</td>
+                        <td>${row.age || '—'}</td>
+                        <td>${row.date || '—'}</td>
+                        <td><strong>${row.ts_total ?? '—'}</strong></td>
+                        <td>${row.gcs_total ?? '—'}</td>
+                        <td>${row.severity || '—'}</td>
+                    `;
+                    tbody.appendChild(tr);
+                    index++;
+                });
+                recordCount.textContent = data.length;
+            } catch (err) {
+                console.error('加载异常:', err);
+                historyBody.innerHTML = `<tr><td colspan="8" class="history-empty">加载失败：${err.message}</td></tr>`;
+                recordCount.textContent = '0';
+            }
+        }
 
-                printWindow.document.write(printHtml);
-                printWindow.document.close();
+        // ================================================================
+        // ★★★ 导出 CSV ★★★
+        // ================================================================
+        async function exportCSV() {
+            try {
+                const response = await fetch('/api/list');
+                const data = await response.json();
+                if (data.error || !data || data.length === 0) {
+                    showToast('没有可导出的数据', 'error');
+                    return;
+                }
+                const headers = [
+                    '序号', '姓名', '性别', '年龄', '日期',
+                    '呼吸频率', '呼吸分值', '呼吸幅度分值', '收缩压', '收缩压分值',
+                    '毛细血管分值', 'GCS映射分值', 'TS总分',
+                    'GCS睁眼', 'GCS言语', 'GCS运动', 'GCS总分',
+                    '伤情', '预后'
+                ];
+                let rows = [];
+                let index = 1;
+                data.forEach(row => {
+                    rows.push([
+                        index,
+                        row.name || '',
+                        row.gender || '',
+                        row.age || '',
+                        row.date || '',
+                        row.resp_rate || '',
+                        row.resp_score || '',
+                        row.depth_score || '',
+                        row.sbp || '',
+                        row.sbp_score || '',
+                        row.capillary_score || '',
+                        row.gcs_mapped || '',
+                        row.ts_total || '',
+                        row.gcs_eye || '',
+                        row.gcs_verbal || '',
+                        row.gcs_motor || '',
+                        row.gcs_total || '',
+                        row.severity || '',
+                        row.prognosis || ''
+                    ]);
+                    index++;
+                });
+                let csvContent = headers.join(',') + '\n';
+                rows.forEach(row => {
+                    const escapedRow = row.map(field => {
+                        if (typeof field === 'string' && (field.includes(',') || field.includes('"'))) {
+                            return `"${field.replace(/"/g, '""')}"`;
+                        }
+                        return field;
+                    });
+                    csvContent += escapedRow.join(',') + '\n';
+                });
+                const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                link.href = url;
+                link.download = `创伤评分记录_${new Date().toISOString().slice(0,10)}.csv`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                showToast('✅ 导出成功！', 'success');
+            } catch (err) {
+                console.error('导出异常:', err);
+                showToast('❌ 导出失败：' + err.message, 'error');
+            }
+        }
 
-                printWindow.onload = function() {
-                    try {
-                        printWindow.focus();
-                        printWindow.print();
-                    } catch (e) {
-                        alert('打印失败：' + (e.message || '未知错误') + '\n请尝试使用浏览器菜单中的“打印”功能。');
-                    } finally {
-                        setTimeout(function() {
-                            printBtn.classList.remove('printing');
-                        }, 500);
+        // ================================================================
+        // ★★★ 打印（新窗口）★★★
+        // ================================================================
+        function printViaNewWindow() {
+            printBtn.classList.add('printing');
+            updateAll();
+            const card = document.getElementById('printArea');
+            const cardClone = card.cloneNode(true);
+            const cloneBtnGroup = cardClone.querySelector('.btn-group');
+            if (cloneBtnGroup) cloneBtnGroup.remove();
+            const cloneGuide = cardClone.querySelector('.print-guide');
+            if (cloneGuide) cloneGuide.remove();
+            const clonePanel = cardClone.querySelector('.score-panel');
+            if (clonePanel) {
+                const firstDiv = clonePanel.querySelector('div:first-child');
+                if (firstDiv) firstDiv.remove();
+                if (clonePanel.children.length === 0) clonePanel.remove();
+            }
+            const cloneHistory = cardClone.querySelector('.history-section');
+            if (cloneHistory) cloneHistory.remove();
+
+            function removeLoadingText(node) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    if (node.textContent.includes('正在努力加载')) {
+                        node.textContent = node.textContent.replace(/正在努力加载[，,]\s*请稍候/g, '').trim();
                     }
-                };
-
-                printWindow.onerror = function(err) {
-                    alert('打印预览加载失败，请尝试使用浏览器菜单中的“打印”功能。错误：' + err);
-                    printBtn.classList.remove('printing');
-                };
+                    return;
+                }
+                const children = node.childNodes;
+                for (let i = 0; i < children.length; i++) {
+                    removeLoadingText(children[i]);
+                }
             }
-
-            // ----- 设置默认日期 -----
-            function setDefaultDate() {
-                const today = new Date();
-                const y = today.getFullYear();
-                const m = String(today.getMonth() + 1).padStart(2, '0');
-                const d = String(today.getDate()).padStart(2, '0');
-                scoreDate.value = `${y}-${m}-${d}`;
+            removeLoadingText(cardClone);
+            const clonedDateInput = cardClone.querySelector('#scoreDate');
+            if (clonedDateInput && scoreDate.value) {
+                clonedDateInput.value = scoreDate.value;
             }
-
-            // ----- 初始化 -----
-            function init() {
-                setDefaultDate();
-                respRate.addEventListener('input', updateAll);
-                sbpValue.addEventListener('input', updateAll);
-                const allRadios = [...depthRadios, ...capillaryRadios, ...gcsEye, ...gcsVerbal, ...gcsMotor];
-                allRadios.forEach(r => r.addEventListener('change', updateAll));
-                resetBtn.addEventListener('click', resetAll);
-                printBtn.addEventListener('click', printViaNewWindow);
-                updateAll();
+            const styles = document.querySelectorAll('style');
+            let styleText = '';
+            styles.forEach(function(style) {
+                styleText += style.innerHTML;
+            });
+            const printStyle = `
+                html, body { margin: 0; padding: 0; height: auto; display: block; }
+                body { background: white; padding: 0 0.25in 0.15in 0.25in; font-family: 'Segoe UI', Roboto, Arial, sans-serif; font-size: 10pt; line-height: 1.3; display: block; }
+                .card { max-width: 100%; box-shadow: none; border-radius: 0; padding: 0; background: white; margin: 0; }
+                .subhead { border-bottom: 2px solid #333; margin-bottom: 8px; padding-bottom: 6px; }
+                .subhead .badge { display: none; }
+                h1 { font-size: 16pt; color: #000; margin: 0; }
+                .patient-info { background: transparent !important; border: none !important; padding: 4px 0 8px 0 !important; margin-bottom: 8px !important; border-radius: 0 !important; gap: 4px 16px; display: flex; flex-wrap: wrap; align-items: center; }
+                .patient-info .field { display: inline-flex; align-items: center; gap: 4px 8px; flex-wrap: nowrap; }
+                .patient-info .field label { font-weight: 600; color: #000; font-size: 9pt; }
+                .patient-info .field input[type="text"], .patient-info .field input[type="number"], .patient-info .field input[type="date"] { border: none !important; border-bottom: 1px solid #333 !important; border-radius: 0 !important; background: transparent !important; padding: 1px 2px !important; font-weight: 600; font-size: 9pt; width: auto; min-width: 50px; color: #000; }
+                .patient-info .radio-group-inline { background: transparent !important; border: none !important; padding: 0 !important; gap: 4px 10px; display: inline-flex; }
+                .patient-info .radio-group-inline label { padding: 0 2px !important; background: transparent !important; font-size: 9pt; font-weight: 400; color: #000; display: inline-flex; align-items: center; gap: 2px; }
+                .patient-info .radio-group-inline label:has(input:checked) { background: transparent !important; padding: 0 2px !important; font-weight: 600; }
+                .patient-info .radio-group-inline input[type="radio"] { display: none !important; }
+                .patient-info .radio-group-inline label:has(input:checked)::before { content: "● "; font-weight: 700; color: #000; }
+                .patient-info .radio-group-inline label:not(:has(input:checked))::before { content: "○ "; font-weight: 400; color: #999; }
+                .ts-table-wrap, .gcs-table-wrap { border: 1px solid #333 !important; border-radius: 0 !important; margin: 4px 0 6px !important; overflow: visible !important; }
+                .ts-table, .gcs-table { border-collapse: collapse; font-size: 9pt; width: 100%; }
+                .ts-table th, .gcs-table th { background: #e8edf4 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; border: 1px solid #333 !important; border-bottom: 2px solid #333 !important; padding: 4px 6px !important; font-weight: 700; color: #000; text-align: center; }
+                .gcs-table th[colspan="3"] { background: #e0e8f0 !important; font-size: 11pt; }
+                .ts-table td, .gcs-table td { border: 1px solid #333 !important; padding: 4px 6px !important; background: white !important; color: #000; vertical-align: middle; text-align: center; }
+                .ts-table .label-col, .gcs-table .label-col { background: #f5f8fc !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; font-weight: 600; color: #000; text-align: left; padding-left: 8px !important; width: 25%; }
+                .ts-table .value-col, .gcs-table .value-col { width: 45%; text-align: center; }
+                .ts-table .score-col, .gcs-table .score-col { background: #f8fcff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; font-weight: 700; color: #000; width: 15%; }
+                .ts-table .total-row td, .gcs-table .total-row td { background: #eef3f8 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; border-top: 2px solid #333 !important; font-weight: 700; color: #000; }
+                .ts-table .total-row .score-col, .gcs-table .total-row .score-col { font-size: 12pt; }
+                .ts-table .hint-row td, .gcs-table .hint-row td { background: #f5faff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; border-top: 1px solid #333 !important; padding: 4px 8px !important; font-weight: 500; color: #000; text-align: left; }
+                .ts-table .hint-row .hint-inline { display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: center; }
+                .ts-table .hint-row .badge-severity { background: #e2f0e6 !important; border: 1px solid #999 !important; color: #1f7840 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 1px 8px; border-radius: 12px; font-size: 8pt; }
+                .ts-table .hint-row .badge-severity.critical { background: #fde8e8 !important; color: #b33c3c !important; }
+                .ts-table .hint-row .badge-severity.moderate { background: #fff0d6 !important; color: #a8691a !important; }
+                .gcs-table .radio-group-inline, .ts-table .radio-group-inline { background: transparent !important; border: none !important; padding: 0 !important; gap: 2px 6px !important; justify-content: center; display: flex; flex-wrap: wrap; }
+                .gcs-table .radio-group-inline label, .ts-table .radio-group-inline label { background: transparent !important; padding: 0 2px !important; font-weight: 400; color: #555; font-size: 8pt; display: inline-flex; align-items: center; gap: 2px; }
+                .gcs-table .radio-group-inline label:has(input:checked), .ts-table .radio-group-inline label:has(input:checked) { background: transparent !important; font-weight: 700; color: #000; padding: 0 2px !important; border: none !important; }
+                .gcs-table .radio-group-inline input[type="radio"], .ts-table .radio-group-inline input[type="radio"] { display: none !important; }
+                .gcs-table .radio-group-inline label:has(input:checked)::before, .ts-table .radio-group-inline label:has(input:checked)::before { content: "● "; font-weight: 700; color: #000; }
+                .gcs-table .radio-group-inline label:not(:has(input:checked))::before, .ts-table .radio-group-inline label:not(:has(input:checked))::before { content: "○ "; font-weight: 400; color: #999; }
+                .ts-table .value-col input[type="number"] { border: none !important; background: transparent !important; text-align: center; font-weight: 600; font-size: 9pt; width: 50px; padding: 0 !important; color: #000; }
+                .score-panel, .btn-group, .btn-reset, .btn-print, .btn-save, .btn-export, .print-guide { display: none !important; }
+                .gcs-table .hint-row td { font-size: 8.5pt; }
+                .ts-table-wrap, .gcs-table-wrap { margin: 3px 0 4px !important; }
+                .gcs-table-wrap { margin-top: 6px !important; }
+                .patient-info { margin-bottom: 4px !important; }
+            `;
+            const docTitle = document.title || '创伤评分表';
+            const printHtml = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>${docTitle}</title>
+                    <style>${styleText}</style>
+                    <style>${printStyle}</style>
+                </head>
+                <body>
+                    ${cardClone.outerHTML}
+                </body>
+                </html>
+            `;
+            let printWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+            if (!printWindow) {
+                alert('新窗口被拦截，请允许弹出窗口或使用浏览器打印菜单。');
+                printBtn.classList.remove('printing');
+                return;
             }
+            printWindow.document.write(printHtml);
+            printWindow.document.close();
+            printWindow.onload = function() {
+                try {
+                    printWindow.focus();
+                    printWindow.print();
+                } catch (e) {
+                    alert('打印失败：' + e.message);
+                } finally {
+                    setTimeout(() => printBtn.classList.remove('printing'), 500);
+                }
+            };
+            printWindow.onerror = function(err) {
+                alert('打印预览加载失败：' + err);
+                printBtn.classList.remove('printing');
+            };
+        }
 
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', init);
-            } else {
-                init();
-            }
-        })();
+        // ================================================================
+        // 初始化
+        // ================================================================
+        function setDefaultDate() {
+            const today = new Date();
+            const y = today.getFullYear();
+            const m = String(today.getMonth() + 1).padStart(2, '0');
+            const d = String(today.getDate()).padStart(2, '0');
+            scoreDate.value = `${y}-${m}-${d}`;
+        }
+        function init() {
+            setDefaultDate();
+            respRate.addEventListener('input', updateAll);
+            sbpValue.addEventListener('input', updateAll);
+            const allRadios = [...depthRadios, ...capillaryRadios, ...gcsEye, ...gcsVerbal, ...gcsMotor];
+            allRadios.forEach(r => r.addEventListener('change', updateAll));
+            resetBtn.addEventListener('click', resetAll);
+            printBtn.addEventListener('click', printViaNewWindow);
+            saveBtn.addEventListener('click', saveRecord);
+            exportBtn.addEventListener('click', exportCSV);
+            updateAll();
+            loadHistory();
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
     </script>
 </body>
 </html>
