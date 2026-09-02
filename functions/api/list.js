@@ -1,9 +1,8 @@
-导出 async 函数 onRequest(上下文) {
+导出 异步 函数 onRequest(上下文) {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Content-Type': 'application/json'
   };
-
   try {
     const db = context.env.DB;
     const { results } = await db.prepare(`
@@ -18,7 +17,6 @@
       来自 trauma_records
       按 created_at 降序排列
     `).all();
-
     返回 新的 响应(JSON.字符串化(结果), { 头 });
   } catch (err) {
     返回 新的 Response(JSON.stringify({ 错误: err.消息 }), {
