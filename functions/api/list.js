@@ -1,4 +1,4 @@
-导出 异步 函数 onRequest(上下文) {
+export async function onRequest(context) {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Content-Type': 'application/json'
@@ -7,21 +7,21 @@
     const db = context.env.DB;
     const { results } = await db.prepare(`
       SELECT 
-        姓名、性别、年龄、日期、
-        呼吸频率、呼吸评分、深度评分、
-        血压、血压评分、毛细血管评分，
-        GCS评分、总时间，
+        name, gender, age, date,
+        resp_rate, resp_score, depth_score,
+        sbp, sbp_score, capillary_score,
+        gcs_mapped, ts_total,
         gcs_eye, gcs_verbal, gcs_motor, gcs_total,
-        严重程度、预后，
-        创建时间
-      来自 trauma_records
-      按 created_at 降序排列
+        severity, prognosis,
+        created_at
+      FROM trauma_records
+      ORDER BY created_at DESC
     `).all();
-    返回 新的 响应(JSON.字符串化(结果), { 头 });
+    return new Response(JSON.stringify(results), { headers });
   } catch (err) {
-    返回 新的 Response(JSON.stringify({ 错误: err.消息 }), {
-      状态: 500,
-      标题
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 500,
+      headers
     });
   }
 }
