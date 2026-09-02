@@ -5,25 +5,21 @@ export async function onRequest(context) {
     'Access-Control-Allow-Headers': 'Content-Type',
     'Content-Type': 'application/json'
   };
-
   if (context.request.method === 'OPTIONS') {
     return new Response(null, { headers });
   }
-
   if (context.request.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), { 
-      status: 405, 
-      headers 
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+      status: 405,
+      headers
     });
   }
-
   try {
     const data = await context.request.json();
     const db = context.env.DB;
-
-    等待 数据库.准备(`
-      插入到创伤记录表中（
-        姓名、性别、年龄、日期、
+    await db.prepare(`
+      INSERT INTO trauma_records (
+        name, gender, age, date,
         呼吸频率、呼吸评分、深度评分、
         血压、血压评分、毛细血管评分，
         GCS评分、总时间，
@@ -41,8 +37,8 @@ export async function onRequest(context) {
       data.depth_score,
       data.sbp,
       数据.sbp_score,
-      数据.capillary_score,
-      数据.gcs_mapped,
+      数据.毛细血管评分,
+      数据.GCS映射值,
       数据.ts_total,
       data.gcs_eye,
       data.gcs_verbal,
@@ -52,7 +48,6 @@ export async function onRequest(context) {
       数据.预后,
       数据.创建时间
     ).运行();
-
     返回 新的 Response(JSON.stringify({ success: 真 }), { headers });
   } catch (err) {
     返回 新的 Response(JSON.stringify({ 错误: err.消息 }), {
