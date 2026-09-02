@@ -20,39 +20,39 @@ export async function onRequest(context) {
     await db.prepare(`
       INSERT INTO trauma_records (
         name, gender, age, date,
-        呼吸频率、呼吸评分、深度评分、
-        血压、血压评分、毛细血管评分，
-        GCS评分、总时间，
+        resp_rate, resp_score, depth_score,
+        sbp, sbp_score, capillary_score,
+        gcs_mapped, ts_total,
         gcs_eye, gcs_verbal, gcs_motor, gcs_total,
-        严重程度、预后，
-        创建时间
+        severity, prognosis,
+        created_at
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
-      数据.姓名,
-      数据.性别,
+      data.name,
+      data.gender,
       data.age,
       data.date,
       data.resp_rate,
       data.resp_score,
       data.depth_score,
       data.sbp,
-      数据.sbp_score,
-      数据.毛细血管评分,
-      数据.GCS映射值,
-      数据.ts_total,
+      data.sbp_score,
+      data.capillary_score,
+      data.gcs_mapped,
+      data.ts_total,
       data.gcs_eye,
       data.gcs_verbal,
       data.gcs_motor,
       data.gcs_total,
-      数据.严重程度,
-      数据.预后,
-      数据.创建时间
-    ).运行();
-    返回 新的 Response(JSON.stringify({ success: 真 }), { headers });
+      data.severity,
+      data.prognosis,
+      data.created_at
+    ).run();
+    return new Response(JSON.stringify({ success: true }), { headers });
   } catch (err) {
-    返回 新的 Response(JSON.stringify({ 错误: err.消息 }), {
-      状态: 500,
-      标题
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 500,
+      headers
     });
   }
 }
