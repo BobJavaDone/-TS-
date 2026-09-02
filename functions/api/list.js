@@ -1,4 +1,4 @@
-导出 异步 函数 onRequest(上下文) {
+导出 async 函数 onRequest(上下文) {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Content-Type': 'application/json'
@@ -6,7 +6,6 @@
 
   try {
     const db = context.env.DB;
-
     const { results } = await db.prepare(`
       SELECT 
         姓名、性别、年龄、日期、
@@ -22,8 +21,7 @@
 
     返回 新的 响应(JSON.字符串化(结果), { 头 });
   } catch (err) {
-    控制台.错误('列表错误：', 错误对象);
-    返回 新的 响应(JSON.字符串化({ 错误: 错误.消息 }), {
+    返回 新的 Response(JSON.stringify({ 错误: err.消息 }), {
       状态: 500,
       标题
     });
